@@ -8,4 +8,6 @@
 
 void i2c_init();
 void i2c_start_condition();
-void i2c_sendbyte(uint8_t b);
+void i2c_write(uint8_t b);
+uint8_t i2c_read(char finalByte);
+void i2c_stop_condition();
