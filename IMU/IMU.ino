@@ -72,6 +72,13 @@ const char pressurePin = A2;
 const char waterDetectionPin = 57;
 const char temperaturePin = A4;
 
+sBmx160SensorData_t Omagn, Ogyro, Oaccel;
+unsigned long previousTime = 0;
+unsigned long currentTime;
+
+int i = 0;
+int index = 0;
+
 
 void setup(){
   Serial.begin(9600);
@@ -83,14 +90,26 @@ void setup(){
   }
   Serial.print("Millis");  Serial.print(",");  Serial.print("Magnetometer X Raw");  Serial.print(",");  Serial.print("Magnetometer Y Raw");  Serial.print(",");  Serial.print("Magnetometer Y Raw");  Serial.print(",");  Serial.print("Gyroscope X Raw");  Serial.print(",");  Serial.print("Gyroscope Y Raw");  Serial.print(",");  Serial.print("Gyroscope Z Raw");  Serial.print(",");  Serial.print("Accelerometer X Raw");  Serial.print(",");  Serial.print("Accelerometer Y Raw");  Serial.print(",");  Serial.print("Accelerometer Z Raw");  Serial.print(",");  Serial.print("Magnetometer X Average");  Serial.print(",");  Serial.print("Magnetometer Y Average");  Serial.print(",");  Serial.print("Magnetometer Y Average");  Serial.print(",");  Serial.print("Gyroscope X Average");  Serial.print(",");  Serial.print("Gyroscope Y Average");  Serial.print(",");  Serial.print("Gyroscope Z Average");  Serial.print(",");  Serial.print("Accelerometer X Average");  Serial.print(",");  Serial.print("Accelerometer Y Average");  Serial.print(",");  Serial.println("Accelerometer Z Average");
   delay(100);
+
+
+    bmx160.getAllData(&Omagn, &Ogyro, &Oaccel);
+    IMUMagnX[IMUIndex % 6] = Omagn.x;
+    IMUMagnY[IMUIndex % 6] = Omagn.y;
+    IMUMagnZ[IMUIndex % 6] = Omagn.z;
+    IMUGyroX[IMUIndex % 6] = Ogyro.x;
+    IMUGyroY[IMUIndex % 6] = Ogyro.y;
+    IMUGyroZ[IMUIndex % 6] = Ogyro.z;
+    IMUAccelX[IMUIndex % 6] = Oaccel.x;
+    IMUAccelY[IMUIndex % 6] = Oaccel.y;
+    IMUAccelZ[IMUIndex % 6] = Oaccel.z;
+    // /* Display the magnetometer results (magn is magnetometer in uTesla) */
+    // /* Display the gyroscope results (gyroscope data is in g) */
+    // /* Display the accelerometer results (accelerometer data is in m/s^2) */
+    Serial.print(millis());  Serial.print(",");  Serial.print(Omagn.x);  Serial.print(",");  Serial.print(Omagn.y);  Serial.print(",");  Serial.print(Omagn.z);  Serial.print(",");  Serial.print(Ogyro.x);  Serial.print(",");  Serial.print(Ogyro.y);  Serial.print(",");  Serial.print(Ogyro.z);  Serial.print(",");  Serial.print(Oaccel.x);  Serial.print(",");  Serial.print(Oaccel.y);  Serial.print(",");  Serial.print(Oaccel.z);  Serial.print(",");  Serial.print(MovingAverage(IMUMagnX, 5, 3, true));  Serial.print(",");  Serial.print(MovingAverage(IMUMagnY, 5, 3, true));  Serial.print(",");  Serial.print(MovingAverage(IMUMagnZ, 5, 3, true));  Serial.print(",");  Serial.print(MovingAverage(IMUGyroX, 5, 3, true));  Serial.print(",");  Serial.print(MovingAverage(IMUGyroY, 5, 3, true));  Serial.print(",");  Serial.print(MovingAverage(IMUGyroZ, 5, 3, true));  Serial.print(",");  Serial.print(MovingAverage(IMUAccelX, 5, 3, true));  Serial.print(",");  Serial.print(MovingAverage(IMUAccelY, 5, 3, true));  Serial.print(",");  Serial.println(MovingAverage(IMUAccelZ, 5, 3, true));
+
 }
 
-sBmx160SensorData_t Omagn, Ogyro, Oaccel;
-unsigned long previousTime = 0;
-unsigned long currentTime;
 
-int i = 0;
-int index = 0;
 void loop(){
   currentTime = millis();
   if (currentTime - previousTime >= IMUSampleInterval) {
@@ -112,36 +131,36 @@ void loop(){
     previousTime = currentTime;
   }
 
-  if (currentTime - previousTime >= pHSampleInterval) {
-    pH[pHIndex % 6] = analogRead(pHPin);
-    Serial.println(MovingAverage(pH, 5, 3, true));
-    pHIndex++;
-    previousTime = currentTime;
-  }
+  // if (currentTime - previousTime >= pHSampleInterval) {
+  //   pH[pHIndex % 6] = analogRead(pHPin);
+  //   Serial.println(MovingAverage(pH, 5, 3, true));
+  //   pHIndex++;
+  //   previousTime = currentTime;
+  // }
 
-  if (currentTime - previousTime >= turbiditySampleInterval) {
-    turbidity[turbidityIndex % 6] = analogRead(turbidityPin);
-    Serial.println(MovingAverage(turbidity, 5, 3, true));
-    turbidityIndex++;
-    previousTime = currentTime;
-  }
+  // if (currentTime - previousTime >= turbiditySampleInterval) {
+  //   turbidity[turbidityIndex % 6] = analogRead(turbidityPin);
+  //   Serial.println(MovingAverage(turbidity, 5, 3, true));
+  //   turbidityIndex++;
+  //   previousTime = currentTime;
+  // }
 
-  if (currentTime - previousTime >= pressureSampleInterval) {
-    pressure[pressureIndex % 6] = analogRead(pressurePin);
-    Serial.println(MovingAverage(pressure, 5, 3, true));
-    pressureIndex++;
-    previousTime = currentTime;
-  }
+  // if (currentTime - previousTime >= pressureSampleInterval) {
+  //   pressure[pressureIndex % 6] = analogRead(pressurePin);
+  //   Serial.println(MovingAverage(pressure, 5, 3, true));
+  //   pressureIndex++;
+  //   previousTime = currentTime;
+  // }
 
-  if (currentTime - previousTime >= waterDetectionSampleInterval) {
-    Serial.println(digitalRead(waterDetectionPin));
-    previousTime = currentTime;
-  }
+  // if (currentTime - previousTime >= waterDetectionSampleInterval) {
+  //   Serial.println(digitalRead(waterDetectionPin));
+  //   previousTime = currentTime;
+  // }
 
-  if (currentTime - previousTime >= temperatureSampleInterval) {
-    temperature[temperatureIndex % 6] = analogRead(temperaturePin);
-    Serial.println(MovingAverage(temperature, 5, 3, true));
-    temperatureIndex++;
-    previousTime = currentTime;
-  }
+  // if (currentTime - previousTime >= temperatureSampleInterval) {
+  //   temperature[temperatureIndex % 6] = analogRead(temperaturePin);
+  //   Serial.println(MovingAverage(temperature, 5, 3, true));
+  //   temperatureIndex++;
+  //   previousTime = currentTime;
+  // }
 }
