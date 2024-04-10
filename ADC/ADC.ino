@@ -1,4 +1,4 @@
-#include "adc.c"
+#include "spi.c"
 void setup() {
   // put your setup code here, to run once:
 

@@ -5,9 +5,6 @@ void adc_init(){
     ADCSRA |= ((1 << ADEN) | (1 << ADPS2)); // Setting prescaler to 16 (Middleground for speed and accuracy)
 }
 
-/// @brief 
-/// @param adcChannel 0 - 15
-/// @return 
 uint8_t adc_read(uint8_t adcChannel){
     if (adcChannel < 8){
         uint8_t channelMask = (adcChannel & 0x0F);
