@@ -5,11 +5,9 @@
 */
 
 #define FOSC 16000000
-#define BAUD 9600
 #define MYUBRR (FOSC / 16 / BAUD - 1)
 
 void usart_init(uint8_t baud){
-    uint16_t ubrr_tmp = (16000000 / (baud * 16UL)) - 1;
     UBRR0H = (uint8_t)(MYUBRR >> 8);
     UBRR0L = (uint8_t)(MYUBRR);
     UCSR0B = (1 << RXEN0) | (1 << TXEN0); //Enable the reciever and transmitter
