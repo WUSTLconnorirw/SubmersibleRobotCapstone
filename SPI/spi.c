@@ -2,8 +2,12 @@
 
 
 void spi_init(){
-    gpio_pinMode(0x01, DDRB, 0x01); //Set SCK as output
-    gpio_pinMode(0x02, DDRB, 0x01); // Set MOSI as output
+    // gpio_pinMode(0x01, &DDRB, 0x01); //Set SCK as output
+    // gpio_pinMode(0x02, &DDRB, 0x01); // Set MOSI as output
+    DDRB |= (1 << 1); //SCK Output
+    DDRB |= (1 << 2); //MOSI Output
+    DDRB |= (1 << 0); //SS Output
+
     
     SPCR |= (1 << SPE) | (1 << MSTR) | (1 << SPR0); // Enable, Master, Clock rate scalar
 }

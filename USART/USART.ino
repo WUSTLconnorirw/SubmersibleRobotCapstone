@@ -1,12 +1,11 @@
-#include "adc.c"
+#include "usart.c"
 
 void setup() {
   // put your setup code here, to run once:
-  Serial.begin(9600);
-  adc_init();
+  usart_init(9600);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  Serial.println(adc_read(0));
+  usart_write(0x15);  
 }

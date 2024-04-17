@@ -27,10 +27,11 @@ PH6
 /*!
  * @brief Initialize PWM on a specified port
  * @param port Port to initializw PWM on
+ * @param pin Pin to initialize pin on
 */
-void pwm_init(uint8_t port, uint8_t pin);
+void pwm_init(uint8_t* port, uint8_t pin);
 
 /**
  * @brief Begins PWM signal on previosuly specified pin
 */
-void pwm_begin();
+void pwm_begin(uint8_t dutyCycle);
