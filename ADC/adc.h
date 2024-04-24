@@ -11,4 +11,4 @@ void adc_init();
  * @param ADC channel to read from
  * @return ADC reading
  */
-uint8_t adc_read(uint8_t adcChannel);
+uint16_t adc_read(uint8_t adcChannel);

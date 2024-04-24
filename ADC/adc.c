@@ -2,10 +2,12 @@
 
 void adc_init(){
     ADMUX |= ((1 << REFS0)); // Set ADC ref voltage to Analog Vcc
+    ADMUX &= ~(1 << ADLAR); // 10 bit accuracy
     ADCSRA |= ((1 << ADEN) | (1 << ADPS2)); // Setting prescaler to 16 (Middleground for speed and accuracy)
+
 }
 
-uint8_t adc_read(uint8_t adcChannel){
+uint16_t adc_read(uint8_t adcChannel){
     if (adcChannel < 8){
         uint8_t channelMask = (adcChannel & 0x0F);
         ADMUX |= channelMask;
@@ -15,5 +17,5 @@ uint8_t adc_read(uint8_t adcChannel){
         ADCSRB |= (1 << MUX5);
     }
     ADCSRA |= (1 << ADSC); // Start an ADC conversion
-    return ADC;
+    return (uint16_t)((ADCH << 8) | ADC); // Grab ADC High byte and combine with low
 }
