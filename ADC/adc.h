@@ -13,5 +13,3 @@ void adc_init();
  */
 uint16_t adc_read(uint8_t adcChannel);
 
-//FOR TESTING
-void pwm_begin_11_12(uint8_t dutyCycle);

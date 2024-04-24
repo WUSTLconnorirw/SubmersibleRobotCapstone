@@ -35,3 +35,6 @@ void pwm_init(uint8_t* port, uint8_t pin);
  * @brief Begins PWM signal on previosuly specified pin
 */
 void pwm_begin(uint8_t dutyCycle);
+
+//FOR TESTING
+void pwm_begin_11_12(uint8_t dutyCycle);
